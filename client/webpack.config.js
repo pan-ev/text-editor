@@ -23,10 +23,11 @@ module.exports = () => {
         title: 'Text Editor'
       }),
       new InjectManifest({
-        swSrc: './src/sw.js',
-        swDest: 'service-worker.js',
+        swSrc: './src-sw.js',
+        swDest: 'src-sw.js',
       }),
       new WebpackPwaManifest({
+        inject: true,
         name: 'Just Another Text Editor',
         short_name: 'J.A.T.E.',
         description: 'Create notes or code snippets with or without an internet connection',
@@ -36,7 +37,7 @@ module.exports = () => {
         publicPath: './',
         icons: [
           {
-            src: path.resolve('assets/images/logo.png'),
+            src: path.resolve('src/images/logo.png'),
             sizes: [96, 128, 192, 256, 384, 512],
             destination: path.join('assets', 'icons'),
           },
@@ -51,20 +52,30 @@ module.exports = () => {
           use: ['style-loader', 'css-loader'],
         },
         {
-          test: /\.(png|svg|jpg|jpeg|gif)$/i,
-          type: 'asset/resource',
-        },
-        {
           test: /\.m?js$/,
-          exclude: /node_modules/,
+          exclude: /(node_modules|bower_components)/,
           use: {
             loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-env'],
-              plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/transform-runtime'],
             },
           },
         },
+        // {
+        //   test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        //   type: 'asset/resource',
+        // },
+        // {
+        //   test: /\.m?js$/,
+        //   exclude: /node_modules/,
+        //   use: {
+        //     loader: 'babel-loader',
+        //     options: {
+        //       presets: ['@babel/preset-env'],
+        //       plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/transform-runtime'],
+        //     },
+        //   },
+        // },
       ],
     },
   };
